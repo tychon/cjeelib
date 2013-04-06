@@ -17,7 +17,7 @@ ALFLAGS := -mmcu=atmega328
 # Flags for flashing device with avrdude
 DUDEFLAGS := -p m328p -c stk500v1 -P $(DEVICE) -b 115200 -c arduino
 
-OBJS := adc.o
+OBJS := adc.o usart.o
 HEADERS := $(OBJS:.o=.h) bits.h jeenode_pins.h
 
 HEX := $(MAIN).hex
