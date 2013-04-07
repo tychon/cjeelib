@@ -14,6 +14,7 @@ NOTE: The global interrupt flag should be disabled while setting up interrupts.
 #ifndef _USART_H
 #define _USART_H
 
+#include <stdbool.h>
 #include <stdint.h>
 #include <avr/io.h>
 
@@ -91,11 +92,16 @@ NOTE: The global interrupt flag should be disabled while setting up interrupts.
 #define usart_transmit_complete() (BITSET(UCSR0A, TXC0))
 #define usart_data_register_empty() (BITSET(UCSR0A, UDRE0))
 
+#define usart_wait_for_receive_complete()      loop_until_bit_is_set(UCSR0A, RXC0)
+#define usart_wait_for_transmit_complete()     loop_until_bit_is_set(UCSR0A, TXC0)
 #define usart_wait_for_empty_transmit_buffer() loop_until_bit_is_set(UCSR0A, UDRE0)
 
 #define usart_frame_error() (BITSET(UCSR0A, FE0))
 #define usart_data_overrun() (BITSET(UCSR0A, DOR0))
 #define usart_parity_error() (BITSET(UCSR0A, UPE0))
+
+void usart_send_byte(uint8_t byte);
+int usart_receive_byte(uint8_t *byte, bool *frame_error, bool *usart_data_overrun, bool *parity_error);
 
 #endif // _USART_H
 
