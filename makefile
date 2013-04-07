@@ -15,7 +15,10 @@ ALFLAGS := -mmcu=atmega328
 #ALFLAGS := -lprintf_flt -lm -Wl,-u,vfprintf
 
 # Flags for flashing device with avrdude
-DUDEFLAGS := -p m328p -c stk500v1 -P $(DEVICE) -b 115200 -c arduino
+FLASH_BAUDRATE := 115200
+#FLASH_BAUDRATE := 57600
+PROGRAMMER := arduino
+DUDEFLAGS := -p m328p -c $(PROGRAMMER) -P $(DEVICE) -b $(FLASH_BAUDRATE) -v
 
 OBJS := adc.o usart.o
 HEADERS := $(OBJS:.o=.h) bits.h jeenode_pins.h
