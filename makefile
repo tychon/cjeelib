@@ -7,7 +7,7 @@ DEVICE := /dev/ttyUSB0
 MAIN := simple_adc
 
 # Flags for compiling with avr-gcc
-ACFLAGS := -mmcu=atmega328 -std=gnu99 -Os -Wall -Werror -DF_CPU=16000000L -Wl,-u,vfprintf
+ACFLAGS := -mmcu=atmega328 -std=gnu99 -Os -Wall -Werror -DF_CPU=16000000UL -Wl,-u,vfprintf
 
 # Flags for linking with avr-gcc
 ALFLAGS := -mmcu=atmega328
@@ -20,7 +20,7 @@ FLASH_BAUDRATE := 115200
 PROGRAMMER := arduino
 DUDEFLAGS := -p m328p -c $(PROGRAMMER) -P $(DEVICE) -b $(FLASH_BAUDRATE) -v
 
-OBJS := adc.o usart.o
+OBJS := adc.o usart.o i2c.o
 HEADERS := $(OBJS:.o=.h) bits.h jeenode_pins.h
 
 HEX := $(MAIN).hex
