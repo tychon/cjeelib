@@ -1,5 +1,6 @@
 
 #include <avr/io.h>
+#include "bits.h"
 
 #define DDDR  DDRD
 #define DPORT PORTD
@@ -19,7 +20,16 @@
 #define JP3A      2
 #define JP4A      3
 
-#define pin_as_output(sfr, bit) (sfr |= 1 << bit)
-#define digital_on(sfr, bit)    (sfr |= 1 << bit)
-#define digital_off(sfr, bit)   (sfr &= ~(1 << bit))
+#define pin_as_output(sfr, bit) SETBIT(sfr, bit)
+#define digital_on(sfr, bit)    SETBIT(sfr, bit)
+#define digital_off(sfr, bit)   CLRBIT(sfr, bit)
+#define digital_write(reg, bit, val) {\
+  if (val) SETBIT(reg, bit); \
+  else CLRBIT(reg, bit); \
+}
+
+#define pin_as_input(sfr, bit) CLRBIT(sfr, bit)
+#define digital_read(sfr, bit) BITSET(sfr, bit)
+#define pin_pull_up(sfr, bit)    SETBIT(sfr, bit)
+#define pin_no_pull_up(sfr, bit) CLRBIT(sfr, bit)
 
