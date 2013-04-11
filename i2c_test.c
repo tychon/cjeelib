@@ -23,24 +23,23 @@ int main(void) {
   pin_as_output(DDDR, JP4D);
   
   I2CPORT1(port);
+  i2c_init(&port);
   
-  // start for writing
-  if (! i2c_start(&port, ADDRESS, I2CWRITE)) fail(1);
-  // write IODIR register address
-  if (! i2c_write(&port, 0x00)) fail(2);
-  if (! i2c_write(&port, 0x00)) fail(3);
+  _delay_ms(1000);
+  
+  // restart for writing
+  if (! i2c_start(&port, ADDRESS, I2CWRITE)) fail(4);
+  // write GPIO register address
+  if (! i2c_write(&port, 0x0A)) fail(5);
+  if (! i2c_write(&port, 0xFF)) fail(6);
   
   // restart for writing
   if (! i2c_restart(&port, ADDRESS, I2CWRITE)) fail(4);
-  // write GPIO register address
-  if (! i2c_write(&port, 0x09)) fail(5);
-  if (! i2c_write(&port, 0xFF)) fail(6);
+  // write something
+  if (! i2c_write(&port, 0x00)) fail(5);
   
   i2c_stop(&port);
   
-  digital_on(PORTD, JP4D);
-  digital_on(PORTD, JP3D);
-  digital_on(PORTD, JP2D);
   
   while(true) ;
 }

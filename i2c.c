@@ -8,7 +8,7 @@
 
 #ifndef HOLD_MICROSECONDS
   // 1 / (10 us) = 100 KHz
-  #define HOLD_MICROSECONDS 10
+  #define HOLD_MICROSECONDS 300
   // 1 / (2.5 us) = 400 KHz
   //#define HOLD_MICROSECONDS 2.5
   // 1 / (0.588 us) = 1.7 MHz
@@ -28,7 +28,7 @@
 #define SCLHI     (digital_on(APORT, port->pin_scl))
 #define SCLLO     (digital_off(APORT, port->pin_scl))
 
-#define HOLD   (_delay_us(HOLD_MICROSECONDS))
+#define HOLD   (_delay_ms(HOLD_MICROSECONDS))
 
 /**
  * Set up pins, SCL and SDA are high afterwards.
@@ -105,6 +105,7 @@ uint8_t i2c_read(i2cport *port) {
 
 /**
  * Expects SCL to be low in the beginning.
+ * Finishes with a hold.
  */
 void i2c_stop(i2cport *port) {
   SDAOUT(0);
