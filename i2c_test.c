@@ -29,13 +29,12 @@ int main(void) {
   
   // restart for writing
   if (! i2c_start(&port, ADDRESS, I2CWRITE)) fail(4);
-  // write GPIO register address
+  // write OLAT register address
   if (! i2c_write(&port, 0x0A)) fail(5);
+  // write OLAT register content (turn all latches on)
   if (! i2c_write(&port, 0xFF)) fail(6);
   
-  // restart for writing
-  if (! i2c_restart(&port, ADDRESS, I2CWRITE)) fail(4);
-  // write something
+  // write something else
   if (! i2c_write(&port, 0x00)) fail(5);
   
   i2c_stop(&port);

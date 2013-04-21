@@ -8,7 +8,7 @@
 
 #ifndef HOLD_MICROSECONDS
   // 1 / (10 us) = 100 KHz
-  #define HOLD_MICROSECONDS 300
+  #define HOLD_MICROSECONDS 100
   // 1 / (2.5 us) = 400 KHz
   //#define HOLD_MICROSECONDS 2.5
   // 1 / (0.588 us) = 1.7 MHz
