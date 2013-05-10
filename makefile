@@ -5,9 +5,13 @@
 DEVICE := /dev/ttyUSB0
 # default main file (without file extension)
 MAIN := simple_adc
+# default I2C speed
+I2C := I2C_100
 
 # Flags for compiling with avr-gcc
-ACFLAGS := -mmcu=atmega328 -std=gnu99 -Os -Wall -Werror -DF_CPU=16000000UL -Wl,-u,vfprintf
+ACFLAGS := -mmcu=atmega328 -std=gnu99 -Os -Wall -Werror -DF_CPU=16000000UL
+ACFLAGS += -D$(I2C)
+ACFLAGS += -Wl,-u,vfprintf
 
 # Flags for linking with avr-gcc
 ALFLAGS := -mmcu=atmega328

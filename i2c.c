@@ -6,15 +6,6 @@
 
 #include "i2c.h"
 
-#ifndef HOLD_MICROSECONDS
-  // 1 / (10 us) = 100 KHz
-  #define HOLD_MICROSECONDS 100
-  // 1 / (2.5 us) = 400 KHz
-  //#define HOLD_MICROSECONDS 2.5
-  // 1 / (0.588 us) = 1.7 MHz
-  //#define HOLD_MICROSECONDS 0.588
-#endif
-
 #define SETSDAIN (pin_pull_up(DPORT, port->pin_sda), pin_as_input(DDDR, port->pin_sda))
 #define SDAIN    (digital_read(DPIN, port->pin_sda))
 #define SETSDAOUT   (digital_on(DPORT, port->pin_sda), pin_as_output(DDDR, port->pin_sda))
@@ -28,7 +19,7 @@
 #define SCLHI     (digital_on(APORT, port->pin_scl))
 #define SCLLO     (digital_off(APORT, port->pin_scl))
 
-#define HOLD   (_delay_ms(HOLD_MICROSECONDS))
+#define HOLD I2C_HOLD
 
 /**
  * Set up pins, SCL and SDA are high afterwards.

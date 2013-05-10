@@ -5,6 +5,28 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+///// BAUDRATE /////
+#ifndef I2CHOLD_MICROSECONDS
+  #ifdef I2C_100
+    // 1 / (10 us) = 100 KHz
+    #define I2CHOLD_MICROSECONDS 10
+  #endif
+  #ifdef I2C_400
+    // 1 / (2.5 us) = 400 KHz
+    #define I2CHOLD_MICROSECONDS 2.5
+  #endif
+  #ifdef I2C_1700
+    // 1 / (0.588 us) = 1.7 MHz
+    #define I2CHOLD_MICROSECONDS 0.588
+  #endif
+#endif
+
+#ifndef I2CHOLD_MICROSECONDS
+  #error No I2C speed declared (I2CHOLD_MICROSECONDS undefined)
+#endif
+
+#define I2C_HOLD (_delay_us(I2CHOLD_MICROSECONDS))
+
 typedef struct {
   int pin_scl, pin_sda;
 } i2cport;
