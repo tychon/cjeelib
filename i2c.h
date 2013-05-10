@@ -40,10 +40,16 @@ typedef struct {
 #define I2CREAD  1
 
 void i2c_init(i2cport *port);
-bool i2c_start(i2cport *port, uint8_t address, bool read);
-bool i2c_restart(i2cport *port, uint8_t address, bool read);
+
+bool i2c_start(i2cport *port, uint8_t device_address, bool read);
+bool i2c_restart(i2cport *port, uint8_t device_address, bool read);
+
 bool i2c_write(i2cport *port, uint8_t byte);
+bool i2c_register_write(i2cport *port, uint8_t device_address, uint8_t register_address, uint8_t byte);
+
 uint8_t i2c_read(i2cport *port);
+//uint8_t i2c_register_read(i2cport *port, uint8_t device_address);
+
 void i2c_stop(i2cport *port);
 
 #endif // _I2C_H

@@ -21,47 +21,17 @@ int main(void) {
   I2CPORT2(port);
   i2c_init(&port);
   
-  // restart for writing
-  if (! i2c_restart(&port, ADDRESS, I2CWRITE)) fail();
-  // write MODE1 register (turn on oscillator)
-  if (! i2c_write(&port, 0x00)) fail();
-  if (! i2c_write(&port, 0x00)) fail();
-  
-  // start for writing
-  if (! i2c_restart(&port, ADDRESS, I2CWRITE)) fail();
-  // write MODE2 register (group blinking)
-  if (! i2c_write(&port, 0x01)) fail();
-  if (! i2c_write(&port, 0x20)) fail();
-  
-  // restart for writing
-  if (! i2c_restart(&port, ADDRESS, I2CWRITE)) fail();
-  // write GRPPWM register
-  if (! i2c_write(&port, 0x12)) fail();
-  if (! i2c_write(&port, 0x40)) fail();
-  
-  // restart for writing
-  if (! i2c_restart(&port, ADDRESS, I2CWRITE)) fail();
-  // write GRPFREQ register
-  if (! i2c_write(&port, 0x13)) fail();
-  if (! i2c_write(&port, 5)) fail();
-  
-  // restart for writing
-  if (! i2c_restart(&port, ADDRESS, I2CWRITE)) fail();
-  // write LEDOUT0
-  if (! i2c_write(&port, 0x14)) fail();
-  if (! i2c_write(&port, 0x03)) fail();
-  
-  // restart for writing
-  if (! i2c_restart(&port, ADDRESS, I2CWRITE)) fail();
-  // write LEDOUT0
-  
+  I2C_HOLD;
+  i2c_register_write(&port, ADDRESS, 0x00, 0x00); // MODE1
+  i2c_register_write(&port, ADDRESS, 0x01, 0x20); // MODE2
+  i2c_register_write(&port, ADDRESS, 0x12, 0x40); // GRPPWM
+  i2c_register_write(&port, ADDRESS, 0x13,    5); // GRPFREQ
+  i2c_register_write(&port, ADDRESS, 0x14, 0x03); // LEDOUT0
   i2c_stop(&port);
   
   char brightness = 0xA0;
   while(true) {
-    i2c_start(&port, ADDRESS, I2CWRITE);
-    i2c_write(&port, 0x02);
-    i2c_write(&port, ++brightness);
+    i2c_register_write(&port, ADDRESS, 0x02, ++brightness);
     i2c_stop(&port);
     _delay_ms(30);
   }
