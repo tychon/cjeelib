@@ -32,6 +32,9 @@ void i2c_init(i2cport *port) {
 }
 
 /**
+ * Generate start condition and send device address.
+ * This function starts with a hold, because it is supposed to stand
+ * immediately after an i2c_init.
  * Expects SCL and SDA to be high in the beginning.
  * SCL is low afterwards. Finishes with hold.
  * @returns If the receiver sent the ACK bit.
@@ -44,6 +47,9 @@ bool i2c_start(i2cport *port, uint8_t address, bool read) {
 }
 
 /**
+ * Generate a restart condition and send device address.
+ * This function may not be used directly after an
+ * i2c_init (insert an I2C_HOLD).
  * Expects SCL to be low in the beginning.
  * SCL is low afterwards. Finishes with hold.
  * @returns If the receiver sent the ACK bit.
@@ -57,6 +63,7 @@ bool i2c_restart(i2cport *port, uint8_t address, bool read) {
 }
 
 /**
+ * Write byte and receive acknowledgement.
  * Expects SCL to be low in the beginning.
  * SCL is low afterwards. Finishes with a hold.
  * @returns If the receiver sent the ACK bit.
@@ -111,6 +118,7 @@ uint8_t i2c_read(i2cport *port) {
 }
 
 /**
+ * Generate a stop condition.
  * Expects SCL to be low in the beginning.
  * Finishes with a hold.
  */
