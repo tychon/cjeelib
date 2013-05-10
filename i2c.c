@@ -37,6 +37,7 @@ void i2c_init(i2cport *port) {
  * @returns If the receiver sent the ACK bit.
  */
 bool i2c_start(i2cport *port, uint8_t address, bool read) {
+  HOLD;
   SDAOUT(0); HOLD;
   SCLLO; HOLD;
   return i2c_write(port, (address << 1) | read);
