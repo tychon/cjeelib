@@ -24,8 +24,14 @@ FLASH_BAUDRATE := 115200
 PROGRAMMER := arduino
 DUDEFLAGS := -p m328p -c $(PROGRAMMER) -P $(DEVICE) -b $(FLASH_BAUDRATE) -v
 
+# Object files with .c and .h files
 OBJS := adc.o usart.o i2c.o
-HEADERS := $(OBJS:.o=.h) bits.h jeenode_pins.h
+# .h files of .c files
+HEADERS := $(OBJS:.o=.h)
+# .h files without .c file
+HEADERS += bits.h jeenode_pins.h
+# Object files with .c files only
+OBJS += plugs/dimmer_plug.o
 
 HEX := $(MAIN).hex
 
@@ -49,6 +55,6 @@ flash: $(HEX)
 
 # delete generated data
 clean:
-	rm -f *.hex *.elf *.o
+	rm -rf *.hex *.elf *.o
 	make -C host clean
 
