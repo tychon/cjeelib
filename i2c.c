@@ -85,9 +85,23 @@ bool i2c_write(i2cport *port, uint8_t byte) {
 }
 
 /**
+ * Generates a restart conditiona dn sends the device address
+ * and then the register address.
+ * There is no stop condition generated.
+ * There is no delay before the restart condition (as opposed to the
+ * i2c_start function). Therefore it may be necessary to insert an I2C_HOLD
+ * before an i2c_register_addr, if it stands immediately below an i2c_init.
+ * @returns If the receiver sent the ACK bit.
+ */
+bool i2c_register_addr(i2cport *port, uint8_t device_address, uint8_t register_address) {
+  return i2c_restart(port, device_address, I2CWRITE)
+      && i2c_write(port, register_address);
+}
+
+/**
  * Generates a re-/start condition and sends the device address
  * and then register address and one byte of data.
- * There is not stop condition generated.
+ * There is no stop condition generated.
  * There is no delay before the restart condition (as opposed to the
  * i2c_start function). Therefore it may be necessary to insert an I2C_HOLD
  * before an i2c_register_write, if it stands immediately below an i2c_init.

@@ -15,6 +15,10 @@
     // 1 / (2.5 us) = 400 KHz
     #define I2CHOLD_MICROSECONDS 2.5
   #endif
+  #ifdef I2C_1000
+    // 1 / (1 us) = 1 MHz
+    #define I2CHOLD_MICROSECONDS 1
+  #endif
   #ifdef I2C_1700
     // 1 / (0.588 us) = 1.7 MHz
     #define I2CHOLD_MICROSECONDS 0.588
@@ -45,6 +49,7 @@ bool i2c_start(i2cport *port, uint8_t device_address, bool read);
 bool i2c_restart(i2cport *port, uint8_t device_address, bool read);
 
 bool i2c_write(i2cport *port, uint8_t byte);
+bool i2c_register_addr(i2cport *port, uint8_t device_address, uint8_t register_address);
 bool i2c_register_write(i2cport *port, uint8_t device_address, uint8_t register_address, uint8_t byte);
 
 uint8_t i2c_read(i2cport *port);
