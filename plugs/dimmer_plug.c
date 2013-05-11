@@ -2,11 +2,11 @@
 ///// Register addresses /////
 #define MODE1  0x00
 #define MODE2  0x01
-#define PWM(x) (0x02+x)
+#define PWM(x) (0x02+(x))
 #define GRPPWM  0x12
 #define GRPFREQ 0x13
-#define LEDOUT(x) (0x14+x)
-#define SUBADR(x) (0x18+x)
+#define LEDOUT(x) (0x14+(x))
+#define SUBADR(x) (0x18+(x))
 #define ALLCALLADR 0x1B
 
 ///// Auto-Increment options ////
@@ -18,9 +18,9 @@
 
 ///// LED driver options /////
 // Retrieve register address of driver for given LED index.
-#define LEDDRIVER(x) LEDOUT(x/4)
+#define LEDDRIVER(x) LEDOUT((x)/4)
 // Retrieve position for LDR value in LEDOUT(x) register
-#define LDR_SHIFT(x) ((x%4)*2)
+#define LDR_SHIFT(x) (((x)%4) * 2)
 
 #define LDR_OFF(x)     (0x00 << LDR_SHIFT(x)) // LED off
 #define LDR_ON(x)      (0x01 << LDR_SHIFT(x)) // LED on
