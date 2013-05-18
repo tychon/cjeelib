@@ -25,7 +25,8 @@ PROGRAMMER := arduino
 DUDEFLAGS := -p m328p -c $(PROGRAMMER) -P $(DEVICE) -b $(FLASH_BAUDRATE) -v
 
 # Object files with .c and .h files
-OBJS := random.o adc.o usart.o i2c.o
+OBJS := adc.o usart.o i2c.o
+OBJS += random/xorshift.o random/mt19937.o
 # .h files of .c files
 HEADERS := $(OBJS:.o=.h)
 # .h files without .c file

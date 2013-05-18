@@ -1,5 +1,5 @@
 
-#include "random.h"
+#include "xorshift.h"
 
 // http://en.wikipedia.org/wiki/Xorshift
 uint32_t xor128(void) {
