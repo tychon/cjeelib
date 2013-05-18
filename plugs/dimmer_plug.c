@@ -27,6 +27,7 @@
 #define LDR_PWM(x)     (0x02 << LDR_SHIFT(x)) // LED controlled by PWM(x)
 #define LDR_PWM_GRP(x) (0x03 << LDR_SHIFT(x)) // LED controlled by PWM(x) and GRP
 
+// set all drivers in one driver register to same value
 #define LDR_OFF_ALL     0x00
 #define LDR_ON_ALL      0x55 // = 0b01010101
 #define LDR_PWM_ALL     0xAA // = 0b10101010

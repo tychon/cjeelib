@@ -5,7 +5,7 @@
 
 #include <util/delay.h>
 
-#include "random.h"
+#include "random/xorshift.h"
 #include "jeenode_pins.h"
 #include "i2c.h"
 
@@ -80,7 +80,7 @@ int main(void) {
   }
   info();
   
-  // randomness
+  // pseudo-randomness
   for (int i = 0; i < 255; i++) {
     i2c_register_write(&port, ADDRESS, PWM((uint8_t)(xor128() % (uint32_t)16)), (uint8_t)(xor128() % (uint32_t)16));
     _delay_ms(10);
