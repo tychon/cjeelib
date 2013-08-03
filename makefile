@@ -10,7 +10,7 @@ I2C := I2C_100
 
 # Flags for compiling with avr-gcc
 ACFLAGS := -mmcu=atmega328 -std=gnu99 -Os -Wall -Werror -DF_CPU=16000000UL
-ACFLAGS += -D$(I2C)
+ACFLAGS += -I./ -D$(I2C)
 ACFLAGS += -Wl,-u,vfprintf
 
 # Flags for linking with avr-gcc
@@ -56,6 +56,8 @@ flash: $(HEX)
 
 # delete generated data
 clean:
-	rm -rf *.hex *.elf *.o
+	find -name \*.hex -exec rm {} \;
+	find -name \*.elf -exec rm {} \;
+	find -name \*.o   -exec rm {} \;
 	make -C host clean
 
