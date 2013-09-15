@@ -32,7 +32,7 @@ HEADERS := $(OBJS:.o=.h)
 # .h files without .c file
 HEADERS += bits.h jeenode_pins.h
 # Object files with .c files only
-OBJS += plugs/dimmer_plug.o
+OBJS += plugs/dimmer_plug.o plugs/output_plug.o
 
 HEX := $(MAIN).hex
 
