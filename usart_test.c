@@ -1,9 +1,9 @@
 #include <util/delay.h>
 
+#define USART_BAUDRATE 57600
+
 #include "jeenode_pins.h"
 #include "usart.h"
-
-#define USART_BAUDRATE 57600
 
 int main(void) {
   //TODO FIXME mysterious: example breaks if this line is missing
@@ -23,7 +23,11 @@ int main(void) {
   for (;;) {
     usart_wait_for_empty_transmit_buffer();
     UDR0 = 'A' + counter;
-    if (++ counter >= 26) counter = 0;
+    if (++ counter >= 26) {
+      counter = 0;
+      usart_wait_for_empty_transmit_buffer();
+      UDR0 = '\n';
+    }
   }
 }
 
