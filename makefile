@@ -41,6 +41,10 @@ main: $(HEX)
 all: $(OBJS) $(HEX)
 
 lib: $(OBJS)
+	# export object file names, so you can link them with your code
+	# TIP: Don't do it, unless you need them all, because it may blow up your
+	# executable.
+	echo $(OBJS) > export_objects
 
 # flash hex onto chip
 flash: $(HEX)
