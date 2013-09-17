@@ -36,7 +36,11 @@ OBJS += plugs/dimmer_plug.o plugs/output_plug.o
 
 HEX := $(MAIN).hex
 
+main: $(HEX)
+
 all: $(OBJS) $(HEX)
+
+lib: $(OBJS)
 
 # flash hex onto chip
 flash: $(HEX)
