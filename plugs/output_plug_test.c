@@ -21,7 +21,7 @@ int main(void) {
   
   I2CPORT1(port);
   i2c_init(&port);
-  OP_INIT(port);
+  OP_INIT(port, ADDRESS);
   
   while (true) {
     digital_on(DPORT, JP4D);
