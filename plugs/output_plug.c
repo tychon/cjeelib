@@ -15,8 +15,8 @@
  * Set up the Output Plug. This is neccessary, because the output pins of the
  * MCP23008 are configured as inputs on POR / restart.
  */
-#define OP_INIT(port) { \
-  i2c_register_write(&port, ADDRESS, 0x00, 0x00); \
+#define OP_INIT(port, addr) { \
+  i2c_register_write(&port, addr, 0x00, 0x00); \
   i2c_stop(&port); \
 }
 
