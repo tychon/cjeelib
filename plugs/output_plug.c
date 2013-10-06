@@ -40,6 +40,6 @@
  * address of the OLAT register of the MCP23008.
  */
 #define OP_SET(port, addr, bits) { \
-  i2c_register_write(&port, ADDRESS, 0x0A, bits); \
+  i2c_register_write(&port, addr, 0x0A, bits); \
   i2c_stop(&port); \
 }
