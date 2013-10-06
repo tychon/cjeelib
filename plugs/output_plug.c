@@ -16,6 +16,7 @@
  * MCP23008 are configured as inputs on POR / restart.
  */
 #define OP_INIT(port, addr) { \
+  i2c_register_write(&port, addr, 0x0A, 0x00); \
   i2c_register_write(&port, addr, 0x00, 0x00); \
   i2c_stop(&port); \
 }
