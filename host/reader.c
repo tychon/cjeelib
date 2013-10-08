@@ -24,7 +24,7 @@ int main(int argc, char *argv[]) {
   config.c_cc[VTIME] = 0;
   //TODO make baud rate configurable by command line
   if(cfsetispeed(&config, B57600) < 0 || cfsetospeed(&config, B57600) < 0) exit(1);
-  if(tcsetattr(serial_fd, TCSAFLUSH, &config) < 0) exit(1);
+  if(tcsetattr(serial_fd, TCSANOW, &config) < 0) exit(1);
   FILE *serial = fdopen(serial_fd, "r");
   
   setbuf(stdout, NULL);
