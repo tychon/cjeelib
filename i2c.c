@@ -137,10 +137,3 @@ void i2c_stop(i2cport *port) {
   HOLD;
 }
 
-#undef SETSDAIN
-#undef SETSDAOUT
-#undef SDAOUT
-#undef HOLD
-#undef SCLHI
-#undef SCLLO
-
