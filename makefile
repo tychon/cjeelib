@@ -10,7 +10,7 @@ I2C := I2C_100
 
 # Flags for compiling with avr-gcc
 ACFLAGS := -mmcu=atmega328 -std=gnu99 -Os -Wall -Werror -DF_CPU=16000000UL
-ACFLAGS += -I./ -D$(I2C)
+ACFLAGS += -I./ -D$(I2C) -I./plugs/
 ACFLAGS += -Wl,-u,vfprintf
 
 # Flags for linking with avr-gcc
@@ -25,7 +25,7 @@ PROGRAMMER := arduino
 DUDEFLAGS := -p m328p -c $(PROGRAMMER) -P $(DEVICE) -b $(FLASH_BAUDRATE) -v
 
 # Object files with .c and .h files
-OBJS := adc.o usart.o i2c.o
+OBJS := adc.o usart.o i2c.o plugs/rtc_plug.o
 OBJS += random/xorshift.o random/mt19937.o
 # .h files of .c files
 HEADERS := $(OBJS:.o=.h)
