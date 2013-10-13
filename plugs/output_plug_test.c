@@ -21,19 +21,19 @@ int main(void) {
   
   I2CPORT1(port);
   i2c_init(&port);
-  OP_INIT(port, ADDRESS);
+  OPINIT(port, ADDRESS);
   
   while (true) {
     digital_on(DPORT, JP4D);
     _delay_ms(10);
     digital_off(DPORT, JP4D);
-    OP_SET(port, ADDRESS, 0xFF);
+    OPSET(port, ADDRESS, 0xFF);
     _delay_ms(5990);
     
     digital_on(DPORT, JP4D);
     _delay_ms(100);
     digital_off(DPORT, JP4D);
-    OP_SET(port, ADDRESS, 0x00);
+    OPSET(port, ADDRESS, 0x00);
     _delay_ms(5900);
   }
 }
