@@ -90,6 +90,7 @@ int main(int argc, char *argv[]) {
   FILE *serial = fdopen(serial_fd, "r");
   
   setbuf(serial, NULL);
+  tcflush(serial_fd, TCIOFLUSH);
   
   char l[2];
   while (1) {
