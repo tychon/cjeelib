@@ -91,12 +91,13 @@ int main(int argc, char *argv[]) {
   
   setbuf(serial, NULL);
   
-  char l[255];
+  char l[2];
   while (1) {
-    if (fgets(l, 255, serial) == NULL) return 0;
+    if (fgets(l, 2, serial) == NULL) return 0;
     char *c = l;
     printf("%s", c);
   }
   
   return 0;
 }
+
