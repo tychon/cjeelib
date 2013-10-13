@@ -106,22 +106,63 @@ bool i2c_register_write(i2cport *port, uint8_t deviceaddr, uint8_t regaddr, uint
       && i2c_write(port, byte);
 }
 
-//TODO wrong, insert HOLDs
-uint8_t i2c_read(i2cport *port) {
+/**
+ * Read one byte from slave.
+ * The last byte read before a stop condition has to be read with end = true
+ * to be sure, that the slave is noticing the stop condition (and not pulling
+ * low SDA to send a bit).
+ * Escpects SCL to be low in the beginning.
+ * SCL is low afterwards. Finishes with a hold.
+ * @param end If end is true, there is now ACK generated signalling the slave
+ * to stop transmitting data. Otherwise an ACK is generated.
+ * @returns the received byte.
+ */
+uint8_t i2c_read(i2cport *port, bool end) {
   uint8_t data = 0;
   SETSDAIN;
   for (uint8_t mask = 0x80; mask != 0; mask >>= 1) {
-    SCLHI;
+    SCLHI; HOLD;
     if (SDAIN) data |= mask;
-    SCLLO;
+    SCLLO; HOLD;
   }
   SETSDAOUT;
-  // send acknowledgement
-  SDAOUT(0);
-  SCLHI;
-  SCLLO;
-  SDAOUT(1);
+  if (end) { // send acknowledgement
+    SDAOUT(0);
+    SCLHI; HOLD;
+    SCLLO; HOLD;
+    SDAOUT(1);
+  } else { // send no acknowledgement
+    SDAOUT(1);
+    SCLHI; HOLD;
+    SCLLO; HOLD;
+  }
   return data;
+}
+
+/**
+ * Address slave register for reading. Does not read any data.
+ * Do reading yourself, so you can have error codes of this initialization as
+ * return value.
+ */
+uint8_t i2c_register_read_init(i2cport *port, uint8_t device_address, uint8_t register_address) {
+  return i2c_restart(port, device_address, I2CWRITE)
+      && i2c_write(port, register_address)
+      && i2c_restart(port, device_address, I2CREAD);
+}
+
+/**
+ * Address slave register and read one byte of data.
+ * @param byte place to write received data to.
+ * @param end Whether to signalise the slave to stop transmission.
+ * @returns If the process of addressing the slave and the register were successful.
+ */
+bool i2c_register_read(i2cport *port, uint8_t device_address, uint8_t register_address
+                     , uint8_t *byte, bool end) {
+  if (! i2c_restart(port, device_address, I2CWRITE)
+   || ! i2c_write(port, register_address)
+   || ! i2c_restart(port, device_address, I2CREAD)) return false;
+  *byte = i2c_read(port, end);
+  return true;
 }
 
 /**

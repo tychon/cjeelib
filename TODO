@@ -1,4 +1,6 @@
 # TODO
 
+* doc for i2c_test
+* secure header files from including loops
 * rtc plug
 

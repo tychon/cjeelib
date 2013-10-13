@@ -4,7 +4,7 @@
 # default device for flashing
 DEVICE := /dev/ttyUSB0
 # default main file (without file extension)
-MAIN := simple_adc
+MAIN := adc_test
 # default I2C speed
 I2C := I2C_100
 
