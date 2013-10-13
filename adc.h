@@ -22,7 +22,9 @@
 #define adc_right_adjust() (CLRBIT(ADMUX, ADLAR), ADMUX &= ~(0xfc))
 
 ///// Select channel /////
-// Use this one for pin 1 to 8
+// Use this one for selecting analog pins.
+// channel 0 through 3 correspond to analog pins on ports 1 through 4
+// channel 4 is SDA and channel 5 is SCL on the PSIX
 #define adc_channel(pin) (ADMUX &= ~(0xF), ADMUX |= pin)
 // Select 1.1V bandgap voltage reference
 #define adc_channel_vbg() (ADMUX &= ~(0xF), ADMUX |= 0xE)
