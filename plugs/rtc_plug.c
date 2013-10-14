@@ -58,18 +58,20 @@ static uint8_t bcd_to_binary(uint8_t bcd) {
   return (uint8_t) scratchpad;
 }
 
-
-bool rtc_read_time(i2cport *port, uint8_t addr, rtc_time *time) {
-  if (! i2c_register_read_init(port, addr, 0x00)) return false;
+bool rtc_read_time(i2cport *port, rtc_time *time) {
+  if (! i2c_register_read_init(port, RTC_ADDRESS, 0x00)) return false;
+  
   time->seconds = bcd_to_binary(i2c_read(port, false) & 0x7f);
   time->minutes = bcd_to_binary(i2c_read(port, false) & 0x7f);
   uint8_t temp = i2c_read(port, false);
   time->hours = bcd_to_binary(temp & 0x3f);
   time->century = temp >> 6 & 0x1;
-  time->day = i2c_read(port, false) & 0x7;
-  time->date = bcd_to_binary(i2c_read(port, false) & 0x3f);
-  time->month = bcd_to_binary(i2c_read(port, false) & 0x1f);
-  time->year = bcd_to_binary(i2c_read(port, false));
+  time->day = (i2c_read(port, false) & 0x7) - 1;
+  time->date = bcd_to_binary(i2c_read(port, false) & 0x3f) - 1;
+  time->month = bcd_to_binary(i2c_read(port, false) & 0x1f) - 1;
+  time->year = bcd_to_binary(i2c_read(port, true));
+  
+  i2c_stop(port);
   return true;
 }
 

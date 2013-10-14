@@ -7,6 +7,9 @@
 
 #include "i2c.h"
 
+// This I2C address is hardwired and not configurable
+#define RTC_ADDRESS 0x68
+
 typedef enum {
   MON, TUE, WED, THU, FRI, SAT, SUN
 } rtc_day;
@@ -26,8 +29,8 @@ typedef struct {
   bool    century; // new century (toggled if CEB bit is set and years roll over)
 } rtc_time;
 
-bool rtc_read_time(i2cport *port, uint8_t addr, rtc_time *time);
-bool rtc_set_time(i2cport *port, uint8_t addr, rtc_time *time);
+bool rtc_read_time(i2cport *port, rtc_time *time);
+bool rtc_set_time(i2cport *port, rtc_time *time);
 
 #endif // _RTC_PLUG_H
 
