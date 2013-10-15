@@ -9,8 +9,8 @@
  * prevent overflows.
  * @param binary binary number in range 0 - 99 (inclusive)
  * @returns number in bcd representation
- *
-static uint8_t binary_to_bcd(uint8_t binary) {
+ */
+uint8_t binary_to_bcd(uint8_t binary) {
   uint16_t scratchpad = binary;
   uint16_t carrying;
   
@@ -29,14 +29,13 @@ static uint8_t binary_to_bcd(uint8_t binary) {
   }
   return (uint8_t) (scratchpad >> 8);
 }
-*/
 
 /**
  * Convert bcd representation to binary.
  * @param bcd binary coded decimal to convert
  * @returns binary representation of input
  */
-static uint8_t bcd_to_binary(uint8_t bcd) {
+uint8_t bcd_to_binary(uint8_t bcd) {
   uint16_t scratchpad = bcd;
   scratchpad <<= 8;
   uint16_t carrying;
@@ -61,17 +60,59 @@ static uint8_t bcd_to_binary(uint8_t bcd) {
 bool rtc_read_time(i2cport *port, rtc_time *time) {
   if (! i2c_register_read_init(port, RTC_ADDRESS, 0x00)) return false;
   
-  time->seconds = bcd_to_binary(i2c_read(port, false) & 0x7f);
-  time->minutes = bcd_to_binary(i2c_read(port, false) & 0x7f);
+  time->seconds = i2c_read(port, false) & 0x7f;
+  time->minutes = i2c_read(port, false) & 0x7f;
   uint8_t temp = i2c_read(port, false);
-  time->hours = bcd_to_binary(temp & 0x3f);
+  time->hours = temp & 0x3f;
   time->century = temp >> 6 & 0x1;
-  time->day = (i2c_read(port, false) & 0x7) - 1;
-  time->date = bcd_to_binary(i2c_read(port, false) & 0x3f) - 1;
-  time->month = bcd_to_binary(i2c_read(port, false) & 0x1f) - 1;
-  time->year = bcd_to_binary(i2c_read(port, true));
-  
+  time->day = i2c_read(port, false) & 0x7;
+  time->date = i2c_read(port, false) & 0x3f;
+  time->month = i2c_read(port, false) & 0x1f;
+  time->year = i2c_read(port, true);
   i2c_stop(port);
   return true;
 }
+
+/**
+ * NOTE: Sets the CEB (Enable Century) bit in register 0x02
+ * NOTE: Clears the notEOSC (disable oscillator) bit in register 0x00
+ */
+bool rtc_set_time(i2cport *port, rtc_time *time) {
+  if (! i2c_register_addr(port, RTC_ADDRESS, 0x00)) return false;
+  
+  #define write(val) if (! i2c_write(port, val)) return false;
+  write(time->seconds | (0x1 << 7));
+  uint8_t century = time->century ? 0x1 << 6 : 0x0;
+  write(time->minutes | century | 0x1 << 7);
+  write(time->day);
+  write(time->date);
+  write(time->month);
+  write(time->year);
+  #undef write
+  
+  return true;
+}
+
+rtc_time *rtc_convert_time_to_binary(rtc_time *time) {
+  time->seconds = bcd_to_binary(time->seconds);
+  time->minutes = bcd_to_binary(time->minutes);
+  time->hours = bcd_to_binary(time->hours);
+  time->day --;
+  time->date = bcd_to_binary(time->date) - 1;
+  time->month = bcd_to_binary(time->month) - 1;
+  time->year = bcd_to_binary(time->year);
+  return time;
+}
+
+rtc_time *rtc_convert_time_to_bcd(rtc_time *time) {
+  time->seconds = binary_to_bcd(time->seconds);
+  time->minutes = binary_to_bcd(time->minutes);
+  time->hours = binary_to_bcd(time->hours);
+  time->day ++;
+  time->date = binary_to_bcd(time->date) + 1;
+  time->month = binary_to_bcd(time->month) + 1;
+  time->year = binary_to_bcd(time->year);
+  return time;
+}
+
 

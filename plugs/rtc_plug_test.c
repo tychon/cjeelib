@@ -74,6 +74,8 @@ int main() {
       continue;
     }
     
+    rtc_convert_time_to_binary(&time);
+    
     // output data
     if (! usart_write_string("\ntime: %u:%u:%u\n", time.hours, time.minutes, time.seconds)
      || ! usart_write_string("date: %u, %u.%u.%u", time.day, time.date, time.month, time.year)
