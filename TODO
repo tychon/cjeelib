@@ -1,4 +1,8 @@
 # TODO
 
-* secure header files from including loops
 
+* secure header files from including loops
+* put usart_print_string to usart.c:usart_printf
+* offer simple standard usart setupt function
+* blink.c for outputting information over directly attached leds
+* use bit defines THREEBITS / FIVEBITS ...
