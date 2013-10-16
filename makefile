@@ -11,12 +11,13 @@ I2C := I2C_100
 # Flags for compiling with avr-gcc
 ACFLAGS := -mmcu=atmega328 -std=gnu99 -Os -Wall -Werror -DF_CPU=16000000UL
 ACFLAGS += -I./ -D$(I2C) -I./plugs/
-ACFLAGS += -Wl,-u,vfprintf
+# used later for link time optimization
+ACFLAGS += -ffunction-sections -fdata-sections
 
 # Flags for linking with avr-gcc
 ALFLAGS := -mmcu=atmega328
-# For printf variants in avr-libc's stdio (read_supply_voltage):
-#ALFLAGS := -lprintf_flt -lm -Wl,-u,vfprintf
+# Link time optimization (remove unused functions)
+ALFLAGS += -Wl,--gc-sections
 
 # Flags for flashing device with avrdude
 FLASH_BAUDRATE := 115200
