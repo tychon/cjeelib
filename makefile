@@ -36,15 +36,15 @@ HEADERS += bits.h jeenode_pins.h
 OBJS += plugs/dimmer_plug.o plugs/output_plug.o
 
 HEX := $(MAIN).hex
-
 main: $(HEX)
 
-all: $(OBJS) $(HEX)
+MAINS := adc_test usart_test
+MAINS += plugs/dimmer_plug_test plugs/output_plug_test plugs/rtc_plug_test
+all: $(OBJS) $(MAINS:=.hex)
+	make -C host
 
+# export object file names, so you can link them with your code
 lib: $(OBJS)
-	# export object file names, so you can link them with your code
-	# TIP: Don't do it, unless you need them all, because it may blow up your
-	# executable.
 	echo $(OBJS) > objects_export
 
 # flash hex onto chip
