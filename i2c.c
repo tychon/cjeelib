@@ -126,7 +126,7 @@ uint8_t i2c_read(i2cport *port, bool end) {
     SCLLO; HOLD;
   }
   SETSDAOUT;
-  if (end) { // send acknowledgement
+  if (! end) { // send acknowledgement
     SDAOUT(0);
     SCLHI; HOLD;
     SCLLO; HOLD;
