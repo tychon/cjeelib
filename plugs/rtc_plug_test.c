@@ -78,7 +78,7 @@ int main() {
     
     // output data
     if (! usart_write_string("\ntime: %u:%u:%u\n", time.hours, time.minutes, time.seconds)
-     || ! usart_write_string("date: %u, %u.%u.%u", time.day, time.date, time.month, time.year)
+     || ! usart_write_string("date: %u, %u.%u.%u", time.day + 1, time.date + 1, time.month + 1, time.year)
      || ! (time.century ? usart_write_string(" + 1 century\n") : usart_write_string(" + 0 century\n"))) {
       digital_on(PORTD, JP4D);
     }

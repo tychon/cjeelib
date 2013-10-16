@@ -1,5 +1,6 @@
 # TODO
 
+* rtc plug minutes (set time)
 
 * secure header files from including loops
 * put usart_print_string to usart.c:usart_printf
