@@ -1,26 +1,18 @@
+/**
+ * Reads time from RTC Plug on port 2 and writes it to formatted to USART
+ * every 300 ms.
+ */
 
 #include <util/delay.h>
 #include <stdbool.h>
 
 #define USART_BAUDRATE 57600
 
-#include "usart.h"
 #include "jeenode_pins.h"
+#include "usart.h"
 #include "i2c.h"
+
 #include "rtc_plug.h"
-
-#define INFOLEDPIN JP4D
-
-void blink_bit(bool bit) {
-  digital_on(DPORT, INFOLEDPIN);
-  _delay_ms(100);
-  digital_off(DPORT, INFOLEDPIN);
-  _delay_ms(100);
-  if (bit) digital_on(DPORT, INFOLEDPIN);
-  _delay_ms(800);
-  digital_off(DPORT, INFOLEDPIN);
-  _delay_ms(100);
-}
 
 int main() {
   //TODO FIXME mysterious: usart breaks if this line is missing
