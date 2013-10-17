@@ -1,3 +1,8 @@
+/**
+ * Writes with a baud rate of 57600 to usart.
+ * mode: sync, character size: 8 bit, no parity, 1 stop bit
+ */
+
 #include <util/delay.h>
 
 #define USART_BAUDRATE 57600
@@ -13,8 +18,7 @@ int main(void) {
   
   int counter = 0;
   for (;;) {
-    usart_wait_for_empty_transmit_buffer();
-    UDR0 = 'A' + counter;
+    usart_printf("counter c = %d\n", counter);
     if (++ counter >= 26) {
       counter = 0;
       usart_wait_for_empty_transmit_buffer();

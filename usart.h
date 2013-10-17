@@ -1,13 +1,19 @@
 
 /**
-Steps for setting up the USART:
 
+You can use `usart_simple_setup(BAUDRATE)` when `baudrate` is a macro defined
+like `#define BAUDRATE 57600` or you set up your usart by hand:
+Steps for setting up the USART:
 * select a USART mode
 * set up clock generation / baud rate
 * set up frame format (data bits, stop bits, parity)
 * turn circuitry for receiver / transmitter on
-
 NOTE: The global interrupt flag should be disabled while setting up interrupts.
+
+If you use usart_printf, the maximum string length is 512 characters by default.
+You can change this by defining USART_STRINGFTM_BUFFERSIZE to your favorite
+value. But be aware, that there is a static buffer that lingers in you stack
+with this size.
 
  */
 
@@ -19,6 +25,13 @@ NOTE: The global interrupt flag should be disabled while setting up interrupts.
 #include <avr/io.h>
 
 #include "bits.h"
+
+#ifndef USART_STRINGFTM_BUFFERSIZE
+  #define USART_STRINGFTM_BUFFERSIZE 512
+#endif
+
+// used later
+#define usart_clear_errors() (CLRBIT(UCSR0A, FE0), CLRBIT(UCSR0A, DOR0), CLRBIT(UCSR0A, UPE0))
 
 ///// Baud Rate /////
 /// Values for the UBRRn register depending on USART baud rate
@@ -33,8 +46,8 @@ NOTE: The global interrupt flag should be disabled while setting up interrupts.
 // eg. `usart_baud(BAUD_PRESCALE_SYNC(57600));`
 #define usart_baud(ubrr) (UBRR0H = (unsigned char)(ubrr << 8), UBRR0L = (unsigned char)ubrr)
 
-#define usart_normal_transmission_speed() (CLRBIT(UCSR0A, U2X0))
-#define usart_double_transmission_speed() (SETBIT(UCSR0A, U2X0))
+#define usart_normal_transmission_speed() (usart_clear_errors(), CLRBIT(UCSR0A, U2X0))
+#define usart_double_transmission_speed() (usart_clear_errors(), SETBIT(UCSR0A, U2X0))
 
 ///// USART Mode /////
 #define usart_mode_async() (CLRBIT(UCSR0C, UMSEL01), CLRBIT(UCSR0C, UMSEL00))
@@ -55,8 +68,8 @@ NOTE: The global interrupt flag should be disabled while setting up interrupts.
 #define usart_stop_1bit()  (CLRBIT(UCSR0C, USBS0))
 #define usart_stop_2bits() (SETBIT(UCSR0C, USBS0))
 
-#define usart_multi_processor_mode_on()  (CLRBIT(UCSR0A, MPCM0))
-#define usart_multi_processor_mode_off() (SETBIT(UCSR0A, MPCM0))
+#define usart_multi_processor_mode_on()  (usart_clear_errors(), CLRBIT(UCSR0A, MPCM0))
+#define usart_multi_processor_mode_off() (usart_clear_errors(), SETBIT(UCSR0A, MPCM0))
 
 ///// Interrupts /////
 #define usart_interrupt_rx_on()  (SETBIT(UCSR0B, RXCIE0))
@@ -112,6 +125,9 @@ NOTE: The global interrupt flag should be disabled while setting up interrupts.
 
 void usart_send_byte(uint8_t byte);
 bool usart_receive_byte(uint8_t *byte, bool *frame_error, bool *usart_data_overrun, bool *parity_error);
+
+bool usart_printf(const char *fmt, ...);
+bool usart_snprintf(char *buffer, int buflen, const char *fmt, ...);
 
 #endif // _USART_H
 
