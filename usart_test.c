@@ -9,15 +9,7 @@ int main(void) {
   //TODO FIXME mysterious: example breaks if this line is missing
   pin_as_output(DDDR, JP1D);
   
-  usart_baud(BAUD_PRESCALE_SYNC(USART_BAUDRATE));
-  
-  usart_mode_sync();
-  usart_character_size8();
-  usart_parity_off();
-  usart_stop_1bit();
-  
-  usart_receiver_enable();
-  usart_transmitter_enable();
+  usart_simple_setup(USART_BAUDRATE);
   
   int counter = 0;
   for (;;) {

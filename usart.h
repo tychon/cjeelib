@@ -68,7 +68,7 @@ NOTE: The global interrupt flag should be disabled while setting up interrupts.
 
 ///// Other /////
 
-// When to transmit data (tx) and receive data
+// When to transmit data (tx) and receive data in one clock cycle
 // Used in synchronous mode only.
 // Transmit on falling edge of clock:
 #define usart_clock_polarity_tx_falling() (CLRBIT(UCSR0C, UCPOL0))
@@ -79,6 +79,16 @@ NOTE: The global interrupt flag should be disabled while setting up interrupts.
 #define usart_flush_receive_buffer() {\
   unsigned char usart_flush_receive_buffer_dummy; \
   while (BITSET(UCSR0A, RXC0)) usart_flush_receive_buffer_dummy = UDR0; \
+}
+
+#define usart_simple_setup(baudrate) { \
+  usart_baud(BAUD_PRESCALE_SYNC(baudrate)); \
+  usart_mode_sync(); \
+  usart_character_size8(); \
+  usart_parity_off(); \
+  usart_stop_1bit(); \
+  usart_receiver_enable(); \
+  usart_transmitter_enable(); \
 }
 
 ///// Transmitting and receiving /////
@@ -101,7 +111,7 @@ NOTE: The global interrupt flag should be disabled while setting up interrupts.
 #define usart_parity_error() (BITSET(UCSR0A, UPE0))
 
 void usart_send_byte(uint8_t byte);
-int usart_receive_byte(uint8_t *byte, bool *frame_error, bool *usart_data_overrun, bool *parity_error);
+bool usart_receive_byte(uint8_t *byte, bool *frame_error, bool *usart_data_overrun, bool *parity_error);
 
 #endif // _USART_H
 
