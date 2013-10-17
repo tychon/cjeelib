@@ -96,6 +96,12 @@ bool rtc_set_time(i2cport *port, rtc_time *time) {
   write(time->year);
   write(0x80 | (time->calibration & SIXBITS)); // calibration
   write(0x0); // disable trickle charger
+  
+  // the minutes register is cleared, when the transmission isn't restartet
+  // at this point. I think it may have something to do with the register
+  // pointer rolling over.
+  if (! i2c_register_addr(port, RTC_ADDRESS, 0x09)) return false;
+  
   write(0x0); // clear OSF
   #undef write
   

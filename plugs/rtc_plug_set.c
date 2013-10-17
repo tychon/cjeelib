@@ -1,9 +1,9 @@
 
-#define SECONDS 0
-#define MINUTES 2
-#define HOURS 3
-#define DAY 2        // ! monday is 0 !
-#define DATE 16 - 1  // ! first day in month is 0 !
+#define SECONDS 0    // setting this to any value other than zero doesn't work
+#define MINUTES 9
+#define HOURS 21
+#define DAY 3        // ! monday is 0 ! / range is 0 - 6 (inclusive)
+#define DATE 17 - 1  // ! first day in month is 0 !
 #define MONTH 10 - 1 // ! first month in year is 0 !
 #define YEAR 12
 #define CENTURY false
