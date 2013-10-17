@@ -1,4 +1,6 @@
 
+//TODO use the new usart functions
+
 #define _GNU_SOURCE
 
 #include <stdlib.h>
@@ -37,7 +39,7 @@ int main(void) {
   
   for (;;) {
     double vcc = adc_convert_vcc();
-    //TODO use other printf variant
+    //TODO use usart_printf
     char string[100];
     int len = snprintf(string, 100, "%f", vcc);
     for (int i = 0; i < len; i++) sendbyte(string[i]);

@@ -126,8 +126,9 @@ with this size.
 void usart_send_byte(uint8_t byte);
 bool usart_receive_byte(uint8_t *byte, bool *frame_error, bool *usart_data_overrun, bool *parity_error);
 
+void usart_write(const char *string, size_t len);
 bool usart_printf(const char *fmt, ...);
-bool usart_snprintf(char *buffer, int buflen, const char *fmt, ...);
+bool usart_snprintf(char *buffer, size_t buflen, const char *fmt, ...);
 
 #endif // _USART_H
 

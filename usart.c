@@ -32,6 +32,27 @@ bool usart_receive_byte(uint8_t *byte, bool *frame_error, bool *usart_data_overr
   return true;
 }
 
+/**
+ * Write string to usart. If len is 0 write until first NULL byte in string,
+ * else write len bytes from string.
+ * Blocks until the last character was written to UDR0. After calling this
+ * function use usart_wait_for_empty_transmit_buffer to wait until the
+ * last bit was sent and UDR0 is free again.
+ */
+void usart_write(const char *string, size_t len) {
+  if (len) {
+    for (int i = 0; i < len; i++) {
+      usart_wait_for_empty_transmit_buffer();
+      UDR0 = string[i];
+    }
+  } else {
+    do {
+     usart_wait_for_empty_transmit_buffer();
+     UDR0 = *string;
+    } while ( *(++string) );
+  }
+}
+
 static char usart_output_string[USART_STRINGFTM_BUFFERSIZE];
 /**
  * Format a string with 'vsnprintf' from stdio.h and output it to the USART.
@@ -69,7 +90,7 @@ bool usart_printf(const char *fmt, ...) {
  * Works like usart_printf with your own buffer.
  * The formatted string is saved in buffer and send over USART.
  */
-bool usart_snprintf(char *buffer, int buflen, const char *fmt, ...) {
+bool usart_snprintf(char *buffer, size_t buflen, const char *fmt, ...) {
   // format string
   va_list ap;
   va_start(ap, fmt);
