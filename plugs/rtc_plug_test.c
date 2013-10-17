@@ -1,7 +1,5 @@
 
 #include <util/delay.h>
-#include <stdio.h>
-#include <stdarg.h>
 #include <stdbool.h>
 
 #define USART_BAUDRATE 57600

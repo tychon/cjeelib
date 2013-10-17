@@ -1,4 +1,7 @@
 
+#ifndef _JEENODE_PINS_H
+#define _JEENODE_PINS_H
+
 #include <avr/io.h>
 #include "bits.h"
 
@@ -32,4 +35,6 @@
 #define digital_read(sfr, bit) BITSET(sfr, bit)
 #define pin_pull_up(sfr, bit)    SETBIT(sfr, bit)
 #define pin_no_pull_up(sfr, bit) CLRBIT(sfr, bit)
+
+#endif // _JEENODE_PINS_H
 

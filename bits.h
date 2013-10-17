@@ -1,6 +1,6 @@
 
-#ifndef _BITBEATER_H
-#define _BITBEATER_H
+#ifndef _BITS_H
+#define _BITS_H
 
 #include <avr/sfr_defs.h> // special function register access
 
@@ -19,5 +19,5 @@
 #define SIXBITS   0x3f //  0b111111
 #define SEVENBITS 0x7f // 0b1111111
 
-#endif // _BITBEATER_H
+#endif // _BITS_H
 
