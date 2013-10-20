@@ -20,6 +20,7 @@ with this size.
 #ifndef _USART_H
 #define _USART_H
 
+#include <stddef.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <avr/io.h>
