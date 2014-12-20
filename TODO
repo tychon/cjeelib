@@ -1,2 +1,5 @@
 # TODO
 
+* rtc plug read calibration and of bits
+* lcd plug
+* use void in void functions: int main(void)

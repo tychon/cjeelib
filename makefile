@@ -26,7 +26,7 @@ PROGRAMMER := arduino
 DUDEFLAGS := -p m328p -c $(PROGRAMMER) -P $(DEVICE) -b $(FLASH_BAUDRATE) -v
 
 # Object files with .c and .h files
-OBJS := blink.o adc.o usart.o i2c.o plugs/rtc_plug.o
+OBJS := blink.o adc.o usart.o i2c.o plugs/rtc_plug.o plugs/lcd_plug.o
 OBJS += random/xorshift.o random/mt19937.o
 # .h files of .c files
 HEADERS := $(OBJS:.o=.h)
