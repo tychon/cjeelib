@@ -25,7 +25,7 @@ void print_help(char *path) {
       "  B9600\n"
       "  B19200\n"
       "  B38400\n"
-      "  B57600\n"
+      "  B57600 (default)\n"
       "  B115200\n"
       "  B230400\n"
       "  B500000\n"
@@ -65,6 +65,7 @@ int main(int argc, char *argv[]) {
       else TRY(B576000)
       else TRY(B1000000)
       else print_help(argv[0]);
+      #undef TRY
     } else if (! device) {
       device = argv[i];
     } else print_help(argv[0]);

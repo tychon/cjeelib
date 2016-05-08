@@ -7,27 +7,23 @@
 #include "adc.h"
 
 int main(void) {
-  pin_as_output(DDDR, JP1D);
-  pin_as_output(DDDR, JP2D);
-  
-  digital_on(DPORT, JP1D);
-  digital_on(DPORT, JP2D);
+  DDRD |= 1 << 2 | 1 << 3;
   
   // set up adc
   adc_prescale128();
+  adc_channel(0);
   adc_ref_avcc();
-  adc_channel(JP1A);
-  adc_left_adjust();
+  //adc_left_adjust();
   
   for (;;) {
     int res = adc_convert(true);
     
     if(res < (128)) {
-      digital_on(DPORT, JP1D);
-      digital_off(DPORT, JP2D);
+      PORTD |= 1 << 2;
+      PORTD &= ~(1 << 3);
     } else {
-      digital_off(DPORT, JP1D);
-      digital_on(DPORT, JP2D);
+      PORTD |= 1 << 3;
+      PORTD &= ~(1 << 2);
     }
   }
 }

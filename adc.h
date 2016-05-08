@@ -15,6 +15,8 @@
 // Internal 1.1V voltage reference with external capacitor at AREF pin
 #define adc_ref_internal() (SETBIT(ADMUX, REFS1), SETBIT(ADMUX, REFS0))
 
+// TODO FIXME aaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaargh
+// ADCL, ADCH and ADMUX mixed up
 // Write low byte of result into ADCH and high byte into ADCL
 // (+ clear lowest 6 bits in ADCL
 #define adc_left_adjust()  (SETBIT(ADMUX, ADLAR), ADMUX &= ~(0x3f))
